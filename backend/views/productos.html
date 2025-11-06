@@ -1,54 +1,66 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alta de Productos - BitNova</title>
-  <link rel="stylesheet" href="../../assets/css/estilos.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de Productos - BitNova</title>
+    <link rel="stylesheet" href="../../assets/css/estilos.css">
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <h1>Alta de Productos</h1>
-      <p>Completá los datos del producto para agregarlo al sistema.</p>
+    <div class="container">
+        <div class="card">
+            <h1>Alta de Productos</h1>
+            <p>Completá los datos del producto para agregarlo al sistema.</p>
 
-      <form action="../productos.php" method="post">
-        <div class="row">
-          <div>
-            <label for="id_producto">ID (número)</label>
-            <input type="number" id="id_producto" name="id_producto" required min="1" placeholder="Ej: 101">
-          </div>
-          <div>
-            <label for="nombre">Nombre del producto</label>
-            <input type="text" id="nombre" name="nombre" required maxlength="100" placeholder="Ej: Notebook Lenovo 15.6&quot; i5 16GB 512GB">
-          </div>
+            <form id="form-productos" action="../productos.php" method="post" novalidate>
+                <div class="row">
+                    <div>
+                        <label for="id_producto">ID (número)</label>
+                        <input type="number" id="id_producto" name="id_producto" required min="1" placeholder="Ej: 101">
+                    </div>
+                    <div>
+                        <label for="nombre">Nombre del producto</label>
+                        <input type="text" id="nombre" name="nombre" required maxlength="100" placeholder="Ej: Notebook Lenovo 15.6&quot; i5 16GB 512GB">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div>
+                        <label for="imagen">Imagen (URL)</label>
+                        <input type="url" id="imagen" name="imagen" placeholder="Ej: https://...">
+                    </div>
+                    <div>
+                        <label for="precio">Precio</label>
+                        <input type="number" id="precio" name="precio" required step="0.01" min="0" placeholder="Ej: 899999.00">
+                    </div>
+                </div>
+
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" rows="4" maxlength="500" placeholder="Escribí una breve descripción del producto"></textarea>
+
+                <label for="id_categoria">Categoría (ID)</label>
+                <input type="number" id="id_categoria" name="id_categoria" min="1" placeholder="Ej: 1">
+
+                <div class="actions">
+                    <a class="btn btn-outline" href="../../index.php">Cancelar</a>
+                    <button class="btn btn-primary" type="submit">Guardar</button>
+                </div>
+            </form>
+
+            <div class="center-note">Fabrizio Lomello</div>
         </div>
-
-        <div class="row">
-          <div>
-            <label for="imagen">Imagen (URL)</label>
-            <input type="url" id="imagen" name="imagen" placeholder="Ej: https://...">
-          </div>
-          <div>
-            <label for="precio">Precio</label>
-            <input type="number" id="precio" name="precio" required step="0.01" min="0" placeholder="Ej: 899999.00">
-          </div>
-        </div>
-
-        <label for="descripcion">Descripción</label>
-        <textarea id="descripcion" name="descripcion" rows="4" maxlength="500" placeholder="Escribí una breve descripción del producto"></textarea>
-
-        <label for="id_categoria">Categoría (ID)</label>
-        <input type="number" id="id_categoria" name="id_categoria" min="1" placeholder="Ej: 1">
-
-        <div class="actions">
-          <a class="btn btn-outline" href="../../index.php">Cancelar</a>
-          <button class="btn btn-primary" type="submit">Guardar</button>
-        </div>
-      </form>
-
-      <div class="center-note">Fabrizio Lomello</div>
     </div>
-  </div>
+
+    <!-- jQuery (CDN) -->
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous">
+    </script>
+
+    <script src="../../assets/js/validaciones.js"></script>
+
+</body>
+</html>
 </body>
 </html>

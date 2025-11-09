@@ -1,46 +1,46 @@
 <?php
 /* @autor Fabrizio Lomello */
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/../class/autoload.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  header('Location: views/productos.html'); // relativo a /backend
+  header('Location: views/productos.html');
   exit;
 }
 
-// Tomar y sanitizar campos (match exacto con los name del formulario)
-$id_producto  = trim($_POST['id_producto'] ?? '');
+// Tomar y normalizar
 $nombre       = trim($_POST['nombre'] ?? '');
 $imagen       = trim($_POST['imagen'] ?? '');
 $precio_raw   = trim($_POST['precio'] ?? '');
 $descripcion  = trim($_POST['descripcion'] ?? '');
 $id_categoria = trim($_POST['id_categoria'] ?? '');
 
-// Normalizar precio (acepta coma o punto)
 $precio_raw = str_replace(',', '.', $precio_raw);
-$precio = is_numeric($precio_raw) ? (float)$precio_raw : null;
+$precio     = is_numeric($precio_raw) ? (float)$precio_raw : 0;
+$id_cat     = ctype_digit($id_categoria) ? (int)$id_categoria : 0;
 
-// Normalizar IDs
-$id = ($id_producto !== '' && ctype_digit($id_producto)) ? (int)$id_producto : null;
-$categoria_id = ctype_digit($id_categoria) ? (int)$id_categoria : null;
-
-// Validación mínima requerida por la BD
-if ($nombre === '' || $precio === null || $categoria_id === null) {
-  header('Location: views/productos.html'); // vuelve al form si faltan datos
-  exit;
+// Validación mínima
+if ($nombre === '' || $id_cat <= 0) {
+  die('Faltan datos: nombre y categoría son obligatorios.');
 }
 
-// Crear objeto y guardar
-$prod = new Productos(
-  $id,                                // id (null para alta, número para edición)
-  $nombre,
-  $imagen !== '' ? $imagen : null,    // opcional
-  $precio,
-  $descripcion !== '' ? $descripcion : null, // opcional
-  $categoria_id
-);
+// Sanitizar simple para este TP (tu Database no expone escape)
+$nombre      = addslashes($nombre);
+$imagen      = addslashes($imagen);
+$descripcion = addslashes($descripcion);
 
-$prod->guardar();
+// INSERT (id autoincremental)
+$sql = "INSERT INTO productos (nombre, imagen, precio, descripcion, categoria_id)
+        VALUES ('$nombre', " . ($imagen !== '' ? "'$imagen'" : "NULL") . ",
+                $precio, " . ($descripcion !== '' ? "'$descripcion'" : "NULL") . ",
+                $id_cat)";
 
-// Redirigir al listado dinámico
-header('Location: lista_productos.php'); // relativo a /backend
+$db = new Database();
+$db->insert($sql);
+
+// Volver al listado
+header('Location: lista_productos.php');
 exit;
